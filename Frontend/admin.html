@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Healing Your Life</h1>
+
+```
+<nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+    <a href="cart.html">Cart</a>
+    <a href="profile.html">Profile</a>
+    <a href="admin.html">Admin</a>
+</nav>
+```
+
+</header>
+
+<div class="admin-stats">
+
+```
+<div class="course-card">
+    <h3>Total Courses</h3>
+    <h2 id="totalCourses">0</h2>
+</div>
+
+<div class="course-card">
+    <h3>Total Users</h3>
+    <h2 id="totalUsers">0</h2>
+</div>
+
+<div class="course-card">
+    <h3>Total Orders</h3>
+    <h2 id="totalOrders">0</h2>
+</div>
+
+<div class="course-card">
+    <h3>Total Revenue</h3>
+    <h2 id="totalRevenue">₹0</h2>
+</div>
+```
+
+</div>
+
+<div class="login-container">
+
+```
+<h2>Add New Course</h2>
+
+<input
+    type="text"
+    id="title"
+    placeholder="Course Title">
+
+<input
+    type="number"
+    id="price"
+    placeholder="Course Price">
+
+<textarea
+    id="description"
+    placeholder="Course Description"
+    rows="4"
+    style="width:100%;padding:10px;margin-bottom:15px;">
+</textarea>
+
+<button onclick="addCourse()">
+    Add Course
+</button>
+```
+
+</div>
+
+<div class="courses">
+
+```
+<h2>All Courses</h2>
+
+<div id="adminCourses"></div>
+```
+
+</div>
+
+<script>
+
+async function loadStats(){
+
+    try{
+
+        const response =
+        await fetch(
+            "http://localhost:5000/api/courses"
+        );
+
+        const courses =
+        await response.json();
+
+        document.getElementById(
+            "totalCourses"
+        ).innerText = courses.length;
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+async function loadCourses(){
+
+    try{
+
+        const response =
+        await fetch(
+            "http://localhost:5000/api/courses"
+        );
+
+        const courses =
+        await response.json();
+
+        const container =
+        document.getElementById("adminCourses");
+
+        container.innerHTML = "";
+
+        courses.forEach(course => {
+
+            container.innerHTML += `
+                <div class="course-card">
+
+                    <h3>${course.title}</h3>
+
+                    <p>${course.description}</p>
+
+                    <h4>₹${course.price}</h4>
+
+                    <button
+                        onclick="deleteCourse(${course.id})">
+                        Delete
+                    </button>
+
+                </div>
+            `;
+        });
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+async function addCourse(){
+
+    const title =
+    document.getElementById("title").value;
+
+    const description =
+    document.getElementById("description").value;
+
+    const price =
+    document.getElementById("price").value;
+
+    try{
+
+        const response =
+        await fetch(
+            "http://localhost:5000/api/courses",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    title,
+                    description,
+                    price
+                })
+            }
+        );
+
+        const data =
+        await response.json();
+
+        alert(data.message);
+
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("price").value = "";
+
+        loadStats();
+        loadCourses();
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+function deleteCourse(id){
+
+    alert(
+        "Delete API not created yet.\nCourse ID: " + id
+    );
+
+}
+
+loadStats();
+loadCourses();
+
+</script>
+
+</body>
+</html>
