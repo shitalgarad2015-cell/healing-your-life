@@ -7,7 +7,7 @@ async function loadCourses() {
     try {
 
         const response = await fetch(
-            "http://https://healing-your-life.onrender.com/api/courses"
+            "https://healing-your-life.onrender.com/api/courses"
         );
 
         const courses = await response.json();
