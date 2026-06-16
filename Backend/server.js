@@ -26,5 +26,6 @@ app.get("/", (req, res) => {
 
 // start server
 app.listen(5000, () => {
+    console.log("HEALING-YOUR-LIFE DEPLOY TEST 2026");
     console.log("Server Running On Port 5000");
 });

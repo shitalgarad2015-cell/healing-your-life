@@ -1,74 +1,65 @@
 const db = require("../db");
 
-const getCourses = (req, res) => {
-const sql = "SELECT * FROM courses";
+const getCourses = async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM courses");
 
-db.query(sql, (err, result) => {
-    if (err) {
-        console.log(err);
-        return res.status(500).json({
-            message: err.message
-        });
-    }
+    res.json(result.rows);
+  } catch (err) {
+    console.log(err);
 
-    res.json(result);
-});
-
+    res.status(500).json({
+      message: err.message,
+    });
+  }
 };
 
-const addCourse = (req, res) => {
-const { title, description, price } = req.body;
+const addCourse = async (req, res) => {
+  const { title, description, price } = req.body;
 
-const sql =
-    "INSERT INTO courses(title, description, price) VALUES (?, ?, ?)";
+  try {
+    await db.query(
+      "INSERT INTO courses(title, description, price) VALUES ($1, $2, $3)",
+      [title, description, price]
+    );
 
-db.query(
-    sql,
-    [title, description, price],
-    (err, result) => {
-        if (err) {
-            console.log(err);
+    res.json({
+      success: true,
+      message: "Course Added Successfully",
+    });
+  } catch (err) {
+    console.log(err);
 
-            return res.status(500).json({
-                success: false,
-                message: err.message
-            });
-        }
-
-        res.json({
-            success: true,
-            message: "Course Added Successfully"
-        });
-    }
-);
-
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };
 
-const deleteCourse = (req, res) => {
-const id = req.params.id;
+const deleteCourse = async (req, res) => {
+  const id = req.params.id;
 
-db.query(
-    "DELETE FROM courses WHERE id = ?",
-    [id],
-    (err, result) => {
-        if (err) {
-            return res.status(500).json({
-                success: false,
-                message: err.message
-            });
-        }
+  try {
+    await db.query(
+      "DELETE FROM courses WHERE id = $1",
+      [id]
+    );
 
-        res.json({
-            success: true,
-            message: "Course Deleted Successfully"
-        });
-    }
-);
-
+    res.json({
+      success: true,
+      message: "Course Deleted Successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };
 
 module.exports = {
-getCourses,
-addCourse,
-deleteCourse
+  getCourses,
+  addCourse,
+  deleteCourse,
 };
