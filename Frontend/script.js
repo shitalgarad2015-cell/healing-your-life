@@ -1,3 +1,4 @@
+console.log("SCRIPT LOADED");
 // =====================
 // LOAD COURSES
 // =====================
