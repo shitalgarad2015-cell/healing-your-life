@@ -6,6 +6,7 @@ const db = require("./db");
 const courseRoutes = require("./routes/courseRoutes");
 const authRoutes = require("./routes/authRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const cartRoutes = require("./routes/cartRoutes"); // ✅ ADDED CART
 
 // app
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/courses", courseRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/cart", cartRoutes); // ✅ CART ROUTE ADDED
 
 // health check route
 app.get("/", (req, res) => {
