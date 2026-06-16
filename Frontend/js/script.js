@@ -7,7 +7,7 @@ async function loadCourses() {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/api/courses"
+            "http://https://healing-your-life.onrender.com/api/courses"
         );
 
         const courses = await response.json();
@@ -88,7 +88,7 @@ async function payNow(amount, title) {
 
         // STEP 1: Create order from backend
         const response = await fetch(
-            "http://localhost:5000/api/payment/create-order",
+            "http://https://healing-your-life.onrender.com/api/payment/create-order",
             {
                 method: "POST",
                 headers: {
@@ -198,7 +198,7 @@ if (loginForm) {
             try {
 
                 const response = await fetch(
-                    "http://localhost:5000/api/auth/login",
+                    "http://https://healing-your-life.onrender.com/api/auth/login",
                     {
                         method: "POST",
                         headers: {
@@ -265,7 +265,7 @@ if (registerForm) {
             try {
 
                 const response = await fetch(
-                    "http://localhost:5000/api/auth/register",
+                    "http://https://healing-your-life.onrender.com/api/auth/register",
                     {
                         method: "POST",
                         headers: {
