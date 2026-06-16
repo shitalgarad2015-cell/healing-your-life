@@ -88,7 +88,7 @@ async function payNow(amount, title) {
 
         // STEP 1: Create order from backend
         const response = await fetch(
-            "http://https://healing-your-life.onrender.com/api/payment/create-order",
+            "https://healing-your-life.onrender.com/api/payment/create-order",
             {
                 method: "POST",
                 headers: {
@@ -198,7 +198,7 @@ if (loginForm) {
             try {
 
                 const response = await fetch(
-                    "http://https://healing-your-life.onrender.com/api/auth/login",
+                    "https://healing-your-life.onrender.com/api/auth/login",
                     {
                         method: "POST",
                         headers: {
@@ -265,7 +265,7 @@ if (registerForm) {
             try {
 
                 const response = await fetch(
-                    "http://https://healing-your-life.onrender.com/api/auth/register",
+                    "https://healing-your-life.onrender.com/api/auth/register",
                     {
                         method: "POST",
                         headers: {
