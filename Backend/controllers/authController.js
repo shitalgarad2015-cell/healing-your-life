@@ -1,84 +1,72 @@
 const db = require("../db");
 
 // REGISTER
-exports.register = (req, res) => {
-
+exports.register = async (req, res) => {
     const { name, email, password } = req.body;
 
-    const sql =
-        "INSERT INTO users (name,email,password) VALUES (?,?,?)";
-
-    db.query(sql, [name, email, password], (err, result) => {
-
-        if (err) {
-            return res.status(500).json(err);
-        }
+    try {
+        const result = await db.query(
+            "INSERT INTO users (name, email, password) VALUES ($1, $2, $3)",
+            [name, email, password]
+        );
 
         res.json({
             success: true,
             message: "Registration Successful"
         });
 
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Registration failed"
+        });
+    }
 };
 
 
 // LOGIN
-exports.login = (req, res) => {
-
-    const { email, password } = req.body;
-
-    const sql =
-        "SELECT * FROM users WHERE email=? AND password=?";
-
-    db.query(sql, [email, password], (err, result) => {
-
-        if (err) {
-            return res.status(500).json(err);
-        }
-
-        if (result.length > 0) {
-            res.json({
-                success: true,
-                message: "Login Successful"
-            });
-        } else {
-            res.json({
-                success: false,
-                message: "Invalid Email or Password"
-            });
-        }
-    });
-};
-
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
 
     console.log("Request Body:", req.body);
 
     const { email, password } = req.body;
 
-    const sql =
-        "SELECT * FROM users WHERE email=? AND password=?";
+    try {
+        const result = await db.query(
+            "SELECT * FROM users WHERE email = $1 AND password = $2",
+            [email, password]
+        );
 
-    db.query(sql, [email, password], (err, result) => {
+        console.log("Query Result:", result.rows);
 
-        if (err) {
-            console.log("SQL Error:", err);
-            return res.status(500).json(err);
-        }
+        if (result.rows.length > 0) {
 
-        console.log("Query Result:", result);
+            const user = result.rows[0];
 
-        if (result.length > 0) {
             res.json({
                 success: true,
-                message: "Login Successful"
+                message: "Login Successful",
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role
+                }
             });
+
         } else {
             res.json({
                 success: false,
                 message: "Invalid Email or Password"
             });
         }
-    });
+
+    } catch (err) {
+        console.log("SQL Error:", err);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
 };
