@@ -7,25 +7,27 @@ const courseRoutes = require("./routes/courseRoutes");
 const authRoutes = require("./routes/authRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 
-// app must be created FIRST
+// app
 const app = express();
 
 // middleware
 app.use(cors());
 app.use(express.json());
 
-// routes setup
+// routes
 app.use("/api/courses", courseRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/payment", paymentRoutes);
 
-// home route
+// health check route
 app.get("/", (req, res) => {
     res.send("Healing Your Life API Running");
 });
 
-// start server
-app.listen(5000, () => {
+// IMPORTANT: Render PORT fix
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
     console.log("HEALING-YOUR-LIFE DEPLOY TEST 2026");
-    console.log("Server Running On Port 5000");
+    console.log("Server Running On Port " + PORT);
 });
