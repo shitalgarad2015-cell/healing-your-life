@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>My Cart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Healing Your Life</h1>
+
+```
+<nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+
+    <a href="cart.html">
+        Cart (<span id="cartCount">0</span>)
+    </a>
+
+    <a href="profile.html">Profile</a>
+    <a href="contact.html">Contact</a>
+    <a href="#" onclick="logout()">Logout</a>
+</nav>
+```
+
+</header>
+
+<h1 style="text-align:center;">Shopping Cart</h1>
+
+<div id="cart-items"></div>
+
+<h2 id="total" style="text-align:center;"></h2>
+
+<div style="text-align:center; margin-top:20px;">
+    <a href="checkout.html">
+        <button class="btn">
+            Proceed To Checkout
+        </button>
+    </a>
+</div>
+
+<script>
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+let cartContainer =
+document.getElementById("cart-items");
+
+let total = 0;
+
+if(cart.length === 0){
+
+    cartContainer.innerHTML =
+    "<h2 style='text-align:center'>Your Cart Is Empty</h2>";
+}
+
+cart.forEach((item, index) => {
+
+    total += Number(item.price);
+
+    cartContainer.innerHTML += `
+        <div class="course-card">
+            <h3>${item.title}</h3>
+
+            <h4>₹${item.price}</h4>
+
+            <button onclick="removeItem(${index})">
+                Remove
+            </button>
+        </div>
+    `;
+});
+
+document.getElementById("total").innerHTML =
+"Total: ₹" + total;
+
+function removeItem(index){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.splice(index, 1);
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+    location.reload();
+}
+
+function updateCartCount(){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = cart.length;
+    }
+}
+
+updateCartCount();
+
+function logout(){
+
+    localStorage.removeItem("user");
+
+    alert("Logged Out Successfully");
+
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>

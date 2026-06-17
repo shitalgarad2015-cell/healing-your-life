@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>My Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Healing Your Life</h1>
+
+```
+<nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+
+    <a href="cart.html">
+        Cart (<span id="cartCount">0</span>)
+    </a>
+
+    <a href="profile.html">Profile</a>
+    <a href="contact.html">Contact</a>
+
+    <a href="#" onclick="logout()">
+        Logout
+    </a>
+</nav>
+```
+
+</header>
+
+<div class="profile-container">
+
+```
+<h1>My Profile</h1>
+
+<h3 id="userEmail"></h3>
+
+<h2>My Enrolled Courses</h2>
+
+<div id="myCourses">
+    <p>No courses enrolled yet.</p>
+</div>
+```
+
+</div>
+
+<script>
+
+// Check Login
+const user = localStorage.getItem("user");
+
+if(!user){
+    window.location.href = "login.html";
+}
+
+// Show Email
+document.getElementById("userEmail").innerText =
+"Email: " + user;
+
+// Load Purchased Courses
+let courses =
+JSON.parse(localStorage.getItem("myCourses")) || [];
+
+let container =
+document.getElementById("myCourses");
+
+if(courses.length > 0){
+
+    container.innerHTML = "";
+
+    courses.forEach(course => {
+
+        container.innerHTML += `
+            <div class="course-card">
+
+                <h3>${course.title}</h3>
+
+                <h4>₹${course.price}</h4>
+
+                <button class="btn">
+                    Start Learning
+                </button>
+
+            </div>
+        `;
+    });
+}
+
+// Cart Count
+function updateCartCount(){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = cart.length;
+    }
+}
+
+updateCartCount();
+
+// Logout
+function logout(){
+
+    localStorage.removeItem("user");
+
+    alert("Logged Out Successfully");
+
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>

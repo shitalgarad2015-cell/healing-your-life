@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Healing Your Life</h1>
+
+```
+<nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+
+    <a href="cart.html">
+        Cart (<span id="cartCount">0</span>)
+    </a>
+
+    <a href="profile.html">Profile</a>
+    <a href="contact.html">Contact</a>
+</nav>
+```
+
+</header>
+
+<div class="login-container">
+
+```
+<h2>Checkout</h2>
+
+<h3 id="orderTotal"></h3>
+
+<input
+    type="text"
+    id="fullname"
+    placeholder="Full Name">
+
+<input
+    type="email"
+    id="email"
+    placeholder="Email">
+
+<input
+    type="text"
+    id="phone"
+    placeholder="Phone Number">
+
+<button onclick="placeOrder()">
+    Place Order
+</button>
+```
+
+</div>
+
+<script>
+
+// Load Cart
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+let total = 0;
+
+cart.forEach(item => {
+    total += Number(item.price);
+});
+
+// Show Total Amount
+document.getElementById("orderTotal").innerText =
+"Total Amount: ₹" + total;
+
+// Cart Counter
+function updateCartCount(){
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    const cartCount =
+    document.getElementById("cartCount");
+
+    if(cartCount){
+        cartCount.innerText = cart.length;
+    }
+}
+
+updateCartCount();
+
+// Place Order
+function placeOrder(){
+
+    const fullname =
+    document.getElementById("fullname").value;
+
+    const email =
+    document.getElementById("email").value;
+
+    const phone =
+    document.getElementById("phone").value;
+
+    if(!fullname || !email || !phone){
+
+        alert("Please fill all fields");
+        return;
+    }
+
+    let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Save purchased courses
+    localStorage.setItem(
+        "myCourses",
+        JSON.stringify(cart)
+    );
+
+    // Clear cart
+    localStorage.removeItem("cart");
+
+    alert("Order Placed Successfully!");
+
+    window.location.href =
+    "profile.html";
+}
+
+</script>
+
+</body>
+</html>
