@@ -146,63 +146,35 @@ async function payNow(amount, title) {
 
 async function addToCart(id, title, price) {
 
+    console.log("ADD TO CART CLICKED");
     const user = localStorage.getItem("user");
 
     if (!user) {
 
         alert("Please Login First");
+
         window.location.href = "login.html";
+
         return;
     }
 
-    try {
+    let cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
 
-        // Save to PostgreSQL
-        const response = await fetch(
-            "https://healing-your-life.onrender.com/api/cart/add",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    user_email: user,
-                    course_id: id,
-                    course_title: title,
-                    price: price
-                })
-            }
-        );
+    cart.push({
+        id,
+        title,
+        price
+    });
 
-        const data = await response.json();
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
 
-        if (data.success) {
-
-            let cart =
-                JSON.parse(localStorage.getItem("cart")) || [];
-
-            cart.push({
-                id,
-                title,
-                price
-            });
-
-            localStorage.setItem(
-                "cart",
-                JSON.stringify(cart)
-            );
-
-            alert(title + " added to cart!");
-        }
-        else {
-            alert("Failed to add to cart");
-        }
-
-    } catch (error) {
-        console.log(error);
-        alert("Error adding to cart");
-    }
+    alert(title + " added to cart!");
 }
+
 
 // =====================
 // LOGIN
