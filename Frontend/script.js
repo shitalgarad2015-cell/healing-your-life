@@ -3,7 +3,6 @@
 // =====================
 const API_BASE = "https://healing-your-life.onrender.com/api";
 
-
 // =====================
 // LOAD COURSES
 // =====================
@@ -16,9 +15,12 @@ async function loadCourses() {
         }
 
         const courses = await response.json();
-        console.log("Courses loaded:", courses);
+
+        console.log("Courses received:", courses);
+        console.log("Is Array:", Array.isArray(courses));
 
         const container = document.getElementById("courses-container");
+
         if (!container) return;
 
         container.innerHTML = "";
@@ -65,14 +67,12 @@ async function loadCourses() {
     }
 }
 
-
-// Auto load courses safely
+// Auto load courses
 document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("courses-container")) {
         loadCourses();
     }
 });
-
 
 // =====================
 // ADD TO CART
@@ -123,7 +123,6 @@ async function addToCart(id, title, price) {
     }
 }
 
-
 // =====================
 // PAYMENT
 // =====================
@@ -138,6 +137,7 @@ async function payNow(amount, title) {
     }
 
     try {
+
         const response = await fetch(`${API_BASE}/payment/create-order`, {
             method: "POST",
             headers: {
@@ -157,6 +157,7 @@ async function payNow(amount, title) {
             order_id: order.id,
 
             handler: function (response) {
+
                 alert("Payment Successful 🎉");
 
                 localStorage.setItem(
@@ -178,26 +179,31 @@ async function payNow(amount, title) {
     }
 }
 
-
 // =====================
 // LOGIN
 // =====================
 const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
+
     loginForm.addEventListener("submit", async (e) => {
+
         e.preventDefault();
 
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
         try {
+
             const response = await fetch(`${API_BASE}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({
+                    email,
+                    password
+                })
             });
 
             const data = await response.json();
@@ -205,6 +211,7 @@ if (loginForm) {
             alert(data.message);
 
             if (data.success) {
+
                 localStorage.setItem("user", email);
                 window.location.href = "index.html";
             }
@@ -215,14 +222,15 @@ if (loginForm) {
     });
 }
 
-
 // =====================
 // REGISTER
 // =====================
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
+
     registerForm.addEventListener("submit", async (e) => {
+
         e.preventDefault();
 
         const name = document.getElementById("name").value;
@@ -230,12 +238,17 @@ if (registerForm) {
         const password = document.getElementById("regPassword").value;
 
         try {
+
             const response = await fetch(`${API_BASE}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ name, email, password })
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
             });
 
             const data = await response.json();
@@ -251,7 +264,6 @@ if (registerForm) {
         }
     });
 }
-
 
 // =====================
 // LOGOUT
